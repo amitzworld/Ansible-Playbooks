@@ -1,0 +1,39 @@
+---
+- name: Installing Nginx along with virtual host on ubuntu OS.
+  hosts: localhost ##Please put host here
+  user: ubuntu ##Please put user which have sudo access
+  become: true
+  gather_facts: false
+  vars:
+     domain_name: www.example.com
+  tasks:
+  - name: Installing Nginx
+    apt:
+         name: nginx
+         state: latest
+         update_cache: yes
+  - name: Create virtual host
+    template:
+      src: templates/vhost.conf.j2
+      dest: "/etc/nginx/sites-enabled/{{ domain_name }}"
+    notify:
+     - restart nginx
+  - name: Creating Document root for 404 error page
+    file:
+      path: "/usr/share/nginx/html/{{ domain_name }}"
+      state: directory
+  - name: Create 404 error page
+    template:
+      src: templates/404.html.j2
+      dest: "/usr/share/nginx/html/{{ domain_name }}/404.html"
+
+  - name: Enable Nginx on machine startup
+    service:
+         name: nginx
+         state: started
+         enabled: yes
+  handlers:
+     - name: restart nginx
+       service: 
+        name: nginx
+        state: restarted	  
