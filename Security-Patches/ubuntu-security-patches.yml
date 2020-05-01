@@ -1,7 +1,7 @@
 ---
 - name: Updates Security Patches Only
   hosts: all ##put hosts where you want to update security patches
-  user: ubuntu	##put user which have sudo access
+  user: ubuntu	##put user which have sudo privilege
   become: true
   gather_facts: false
   tasks:
