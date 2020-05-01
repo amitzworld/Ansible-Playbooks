@@ -4,7 +4,7 @@
 
 - Create user parallelly across hosts
 - Make a member of a particular group
-- provide login shell to the user
+- Provide login shell to the user
 - Add public key in authorized_keys
 
 ### remove_users
