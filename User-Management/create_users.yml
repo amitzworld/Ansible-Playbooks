@@ -1,0 +1,18 @@
+---
+- name: create user on all hosts and make member of particular group, then add public key in the authorized_keys file.
+  gather_facts: false
+  hosts: all ##where need to perform below jobs
+  user: ubuntu  ##Put user who have have sudo access
+  become: true
+  tasks:
+   - name: create user
+     user:
+        name: username		##Username which you want to create
+        state: present
+        groups: group_name	##Group name in which user will be member
+        shell: /bin/bash
+   - name: Set authorized key taken from file
+     authorized_key:
+        user: username ##place username for which you want to add public key.
+        state: present
+        key: "{{ lookup('file', '~/id_rsa.pub')}}"  ##Place location of public file

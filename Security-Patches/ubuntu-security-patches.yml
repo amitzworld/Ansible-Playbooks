@@ -1,0 +1,20 @@
+---
+- name: Updates Security Patches Only
+  hosts: all ##put hosts where you want to update security patches
+  user: ubuntu	##put user which have sudo access
+  become: true
+  gather_facts: false
+  tasks:
+            - name: Make a copy of security repos
+              shell: cat /etc/apt/sources.list|grep secu >/etc/apt/security.sources.list
+
+            - name: Update cache
+              apt:
+                  update_cache: yes
+
+            - name: Install security updates
+              shell: apt-get upgrade -oDir::Etc::SourceList=/etc/apt/security.sources.list --force-yes -y
+
+            - name: Remove unnecessary packages
+              apt:
+                  autoremove: yes

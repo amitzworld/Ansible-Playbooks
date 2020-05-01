@@ -1,0 +1,15 @@
+---
+- hosts: all  ##hosts where perform below jobs
+  user: ubuntu  ##user which will perform below jobs, must have sudo access
+  become: true
+  gather_facts: false
+  tasks:
+  - name: Delete user from hosts
+    user:
+      name: "{{ item }}"   ##refer list of users in with_items
+      state: absent
+      remove: yes
+      force: yes
+    with_items:
+    - user1
+    - user2
